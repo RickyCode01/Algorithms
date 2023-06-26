@@ -19,7 +19,8 @@ def randArr(min: int, max:int, n: int) -> list:
 # print(randArr(-10, 10, 10))
 
 def searchMaxSum(A:list) -> list:
-    series = [] # create an array to store max serie
+    series = [] # create an array to store max series
+    val = [] # array to store single values
     i = 0 # index
     while i < len(A)-1:
         # print(series) # debug
@@ -30,24 +31,29 @@ def searchMaxSum(A:list) -> list:
             while A[i] >= 0: # calculate sum
                 s += A[i] # save value
                 # print(A[i]) # debug
-                if i != len(A)-1: # check last element -> avoid go out of bound
-                    i += 1 # increment index
-                else:
-                    break
-            row.append(i - row[0]) # calculate and save lenght
+                if i != len(A)-1: # check upper bound array
+                    if A[i+1] >= 0: # next element is positive
+                        i += 1 # increment index
+                    else: break
+                else: break # esci dal ciclo
+            row.append(i - row[0]+1) # calculate and save lenght
             row.append(s) # add sum
+        elif A[i] >= 0 and A[i+1] < 0: # in case there is single positive value
+            if len(val) == 0 or val[2] < A[i]: # and val is empty or val is major then previuos saved
+                val = [i, 1, A[i]]
+                # print(val)
         if len(row) != 0: # add series to array if exist
             # add if series is empty or new series is major
             # print(row)
             if len(series) == 0 or series[2] < row[2]:
                 series = row
         i += 1 # increment index
-    return series if len(series) > 0 else None
+    return series if len(series) > 0 else val
 
 # testArr = [1, 2, -10, -5, 5, 7, -9, 8, 10, 3, 2, -1]
 # print(searchMaxSum(testArr))
 
-'''2.  A questo punto devo ricercare i valori a dx e sx della serie con valore positivo e tali 
+'''2. A questo punto devo ricercare i valori a dx e sx della serie con valore positivo e tali 
 che sommando i numeri precedenti la somma rimanga > 0: se durante la ricerca trovo anche solo
 un numero positivo con questi parametri lo aggiungo alla serie'''
 
@@ -56,13 +62,15 @@ def extendSeriesSX(A:list, S:list) -> list:
         subArr = A[:(S[0] + S[1])] # get subarray from start index to beginning
         # print(subArr)
         s = 0 # var to store sum
-        j = -1 # index for new elements
-        for i in range(S[0]-1, 0, -1): # cycle from the element before series
+        j = -1 # index for new elements 
+        i = S[0]-1
+        while i >= 0: # cycle from the element before series
             s += subArr[i]
             # print(subArr[i])
-            if s >= 0: # if sum is positive
+            if s > 0: # if sum is positive
                 j = i # update index
-        if j > 0 : # positive index = other positive number to add to series
+            i -= 1 # decrement like last thing
+        if s > 0 : # positive index = other positive number to add to series
             return subArr[j:] # return subarray updated
         else:
             return subArr[S[0]:] # otherwise original series
@@ -97,10 +105,12 @@ def extendSeries(A:list, S:list) -> list:
         Ssx.extend(Sdx)
     return Ssx
     
-testArr = randArr(-10, 10, 10)
+testArr = randArr(-100, 100, 10)
+# testArr = [82, 64, -8, 93, 80, 80, -76, 3, 6, -75]
 # testArr = [-9, -7, 10, -6, -9, -1, 3, 0, 1, 9]
 # testArr = [0, -7, 6, 5, 5, -2, 1, 2, 2, -10]
 # testArr = [3, 10, 7, -1, -10, -7, -5, 6, 10, 3]
+# testArr = [-7, -6, 8, -4, 4, -8, 8, 1, 9, 10]
 print(testArr)
 print(extendSeries(testArr, searchMaxSum(testArr)))
 ''' problemi: se la serie non contiene coppie è necessario prendere i singoli numeri'''
