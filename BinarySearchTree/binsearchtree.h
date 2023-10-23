@@ -2,8 +2,8 @@
 
 typedef struct Node{
     int key;
-    struct Node* childsx;
-    struct Node* childdx;
+    struct Node* right;
+    struct Node* left;
     struct Node* father;
 }Node;
 
