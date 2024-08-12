@@ -30,6 +30,12 @@ typedef struct graph{
     vertex **Adj; // adiacency list
 }graph;
 
+//struct for FIFO graph element
+typedef struct FIFO{
+    vertex *v; // vertex element stored
+    struct FIFO *next; // pointer to first vertex of list
+}fifo;
+
 // fun to create a vertex of graph
 vertex* createVertex(int val, status state, vertex *next);
 

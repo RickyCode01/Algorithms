@@ -42,8 +42,8 @@ graph* createGraph(int *Verticies, int (*Edges)[][2], int n, int m){
     // allocate memory
     g = malloc(sizeof(struct graph));
     // define fields
-    g->n = n;
-    g->m = m;
+    g->n = n; // vertex cardinality
+    g->m = m; // edge cardinality
 
     // create adiacency list: list of pointers to vertex
     g->Adj = malloc(sizeof(vertex*)*n);
@@ -62,22 +62,20 @@ graph* createGraph(int *Verticies, int (*Edges)[][2], int n, int m){
         }
         // printf("\n");
     }
-    printGraph(g);
-    freeGraph(g);
-    //free(g->Adj);
-    
+    // printGraph(g);
+    // freeGraph(g);
     return g;
 }
 
-
-int main(int argc, char const *argv[]){
+/* int main(int argc, char const *argv[]){
     int Verticies[5] = {1,2,3,4,5};
     int Edges[14][2] = {{1,2},{1,5},
     {2,1},{2,5},{2,3},{2,4},
     {3,2},{3,4},
     {4,2},{4,5},{4,3},
     {5,4},{5,1},{5,2}};
-    createGraph(&Verticies, &Edges, 5, 7);
+    graph *g = createGraph(&Verticies, &Edges, 5, 7);
+    freeGraph(g);
     return 0;
-}
+} */
 
